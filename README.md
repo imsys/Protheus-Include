@@ -5,7 +5,7 @@ Arquivos de cabeçalhos disponibilizados pela TOTVS em 23 de Maio de 2014.
 
 Geralmente estes são disponibilizados compactados via [deflate](https://en.wikipedia.org/wiki/DEFLATE) em um formato de específico.
 
-Estou aqui disponibilizado-os em um formato legível e de fácil acesso. Os arquivos se encontram dentro da pasta `include`.
+Estou aqui disponibilizando-os em um formato legível e de fácil acesso. Os arquivos se encontram dentro da pasta `include`.
 
 ## Mais informações
 
