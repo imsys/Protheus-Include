@@ -6,14 +6,32 @@
 // Data     | Autor             | Descricao
 // ---------+-------------------+--------------------------------------------------------
 // 25.06.01 | 0548-Alan Candido |
+// 23.11.07 | 0548-Alan Candido | BOPS 136453 - Definição da constante EX_REN_TABLE
+// 18.01.08 | 0548-Alan Candido | BOPS 139342 - Implementação e adequação de código, 
+//          |                   | em função de re-estruturação para compartilhamento de 
+//          |                   | código.
+// 18.03.08 | 0548-Alan Candido | BOPS 142638 - Implementação das constantes MAGIC_*,
+//          |                   | para auxiliar na montagem de DD
+// 29.05.08 | 0548-Alan Candido | BOPS 146059
+//          |                   | Implementação de novos identificadores para acesso a
+//          |                   | propriedades da consulta
+// 25.11.08 | 0548-Alan Candido | FNC 00000007374/2008 (10) e 00000007385/2008 (8.11)
+//          |                   | . Implementação de novos identificadores para acesso a
+//          |                   | propriedades da consulta
+//          |                   | . Definição da constante SEL_BUILD
+// 15.12.08 | 0548-Alan Candido | FNC 09025/2008 (8.11) e 09034/2008 (10)
+//          |                   | Adequação de geração de máscara em campos numéricos e datas, 
+//          |                   | para respeitar o formato conforme idioma 
+//          |                   | (chave RegionalLanguage na sessão do ambiente).
 // --------------------------------------------------------------------------------------
 
 /*
 -----------------------------------------------------------------------------------------
 Constantes de uso para execução de consultas
 -----------------------------------------------------------------------------------------
-*/
-#define PAGE_SIZE      29
+*/        
+
+#define PAGE_SIZE      31
 
 /*
 -----------------------------------------------------------------------------------------
@@ -26,14 +44,13 @@ Constantes de uso genérico
 #define CR	                      chr(13)
 #define LF	                      chr(10)
 #define CRLF                      chr(13)+chr(10)
-#define PV                        ';'
 #define PORT_PROTHEUS			        1024
 #define COL_SEP                   chr(9)
 #define ASPAS_S                   "'"
 #define ASPAS_D                   '"'
-#define PASSWORD_SIZE             10
+#define PASSWORD_SIZE             20
 #define MAX_REG_POR_PAGINA        12
-#define VAZIO        "{VAZIO}"
+#define VAZIO        			  "{VAZIO}"
 // Inclui o arquivo de tradução do próprio
 #INCLUDE "DWTConst.ch"
 
@@ -51,6 +68,7 @@ O nome das tabelas seguem o formato
 -----------------------------------------------------------------------------------------
 */                     
 #define TAB_BUILD       "DW00000"
+#define SEL_BUILD       "QW00000"
 #define TAB_DW          "DW00001" 
 #define TAB_CONFIG      "DW00100"
 #define TAB_CONEXAO     "DW00200"
@@ -64,6 +82,8 @@ O nome das tabelas seguem o formato
 #define TAB_MSG_USER	  "DW02102"
 #define SEL_MSG_LER     "QW02102"
 #define TAB_PROCESS     "DW02200"
+#define TAB_IPC         "DW02210"
+#define SEL_IPC         "QW02210"
 #define TAB_ACTIONS     "DW02300"
 #define TAB_CUBESLIST   "DW05000"
 #define TAB_FACTS       "DW05100"
@@ -256,10 +276,11 @@ Identificador de atributos para dimensão temporal
 #define DT_DIA			     11
 #define DT_DOW				  12
 #define DT_DOY			     13
-#define DT_ANOMES        14
+#define DT_SEQSEMANA        14
+#define DT_ANOMES        	15
 
-#define DT_FIELDS ({ "DT", "ANO", "PERIODO", "ESTACAO", "SEMESTRE", "QUADMESTRE", "TRIMESTRE", "BIMESTRE", "MES", "QUINZENA", "SEMANA", "DIA", "DOW", "DOY", "ANO+MES" })
-#define DT_TITLES ({ "DT", _TRAD0005, _TRAD0006, _TRAD0007, _TRAD0008, _TRAD0009, _TRAD0010, _TRAD0011, _TRAD0012, _TRAD0013, _TRAD0014, _TRAD0015, _TRAD0016, _TRAD0017, "Ano/Mês" })/*//"Ano"###"Periodo"###"Estação"###"Semestre"###"Quadrimestre"###"Trimestre"###"Bimestre"###"Mês"###"Quinzena"###"Semana"###"Dia"###"Dia sem."###"Dia greg."*///####TRADUZIR
+#define DT_FIELDS ({ "DT", "ANO", "PERIODO", "ESTACAO", "SEMESTRE", "QUADMESTRE", "TRIMESTRE", "BIMESTRE", "MES", "QUINZENA", "SEMANA", "DIA", "DOW", "DOY", "S_SEMANA", "ANO+MES" })
+#define DT_TITLES ({ "DT", _TRAD0005, _TRAD0006, _TRAD0007, _TRAD0008, _TRAD0009, _TRAD0010, _TRAD0011, _TRAD0012, _TRAD0013, _TRAD0014, _TRAD0015, _TRAD0016, _TRAD0017, _TRAD0031, "Ano/Mês" })/*//"Ano"###"Periodo"###"Estação"###"Semestre"###"Quadrimestre"###"Trimestre"###"Bimestre"###"Mês"###"Quinzena"###"Semana"###"Dia"###"Dia sem."###"Dia greg."*///####TRADUZIR
 
 /*
 -----------------------------------------------------------------------------------------
@@ -299,13 +320,13 @@ ID/titulos para estatistica
 #define EST_VIRTUAL       9
 
 #define EST_TITLES { _TRAD0018 + '<i>[@D]</i>' + _TRAD0019 + '<i>[XXXXXXXX]</i>' /*//'Dados extraídos em '###' às '*/, ;
-							_TRAD0020 + '<i>[@E 999,999,999]</i>' + _TRAD0021 + '<i>[@E 999,999,999]</i>'/*//'Foram extraídos '###' registro(s) de um universo de '*/, ;
+							_TRAD0020 + '<i>[999,999,999]</i>' + _TRAD0021 + '<i>[999,999,999]</i>'/*//'Foram extraídos '###' registro(s) de um universo de '*/, ;
 							_TRAD0022 + '<i>[@X]</i>'/*//'Tempo de construção '*/, ;
 							_TRAD0023 + '<i>[@X]</i>'/*//'Tempo de sumarização '*/, ;
 							_TRAD0024 + '<i>[@D]</i>' + _TRAD0019 + '<i>[XXXXXXXX]</i>'/*//'O último acesso foi em '###' às '*/, ;
 							_TRAD0025 + '<i>download</i>' + _TRAD0026 + '<i>[@x]</i>'/*//'O tempo médio de '###' é '*/,;
-							_TRAD0027 + '<i>[@E 99,999]</i>' + _TRAD0028/*//'Foi visualizada '###' vezes'*/, ;
-							_TRAD0029 + '<i>[@E 99,999.99]</i> (kbytes)'/*//'O tamanho médio das páginas é de '*/,;
+							_TRAD0027 + '<i>[999,999]</i>' + _TRAD0028/*//'Foi visualizada '###' vezes'*/, ;
+							_TRAD0029 + '<i>[99,999.99]</i> (kbytes)'/*//'O tamanho médio das páginas é de '*/,;
 							_TRAD0030 + '<i>[@X]</i>'/*//'Campos virtuais/filtros '*/ }
 
 /*
@@ -391,10 +412,6 @@ Identificadores de filetypes
 #define FT_EXT	    1
 #define FT_DESC     2
 #define FT_EXP_CODE 3
-#define FT_TYPES    {{".txt", "Texto"      , FT_TXT}       , {".txt", "Texto SDF" , FT_SDF}, ;
-                     {".htm", "HyperText"  , FT_HTM}       , {".xls", "Excel"     , FT_EXCEL }, ;
-                     {".jpg", "Imagem JPEG", FT_GRAPH_JPEG}, {".xml", "Excel(xml)", FT_EXCEL_XML}, ;
-                     {".csv", "Texto(CSV)" , FT_CSV}        }
 
 //-----------------------------------------------------------------------------------------
 
@@ -485,6 +502,8 @@ Tipo de estatisticas
 #define ST_USERS_LOGOUT          "11200" // Data/hora de logout
 #define ST_USERS_TRYACCESS       "11300" // Acesso negado
 #define ST_USERS_TIMEOUT         "11400" // Ocorreu queda por time-out
+#define ST_BUILD_QUERYS          "12000" // Tempo de construção de consultas
+#define ST_EXPORT_QUERYS         "12100" // Tempo de exportação de consultas
 
 /*
 -----------------------------------------------------------------------------------------
@@ -493,7 +512,16 @@ Opções para apresentação dos forms de filtros ou seleçao na visualização da cosu
 */
 #define OPTION_SHOWNOTHING     "0"
 #define OPTION_SHOWFILTER      "1"
-#define OPTION_SHOWSELECTION   "2"
+#define OPTION_SHOWSELECTION   "2"  
+
+/*
+-----------------------------------------------------------------------------------------
+Opções para aplicação automática de filtros QBE nos Browsers.
+-----------------------------------------------------------------------------------------
+*/
+#define OPTION_NOTAPPLY     		"0"
+#define OPTION_APPLY       			"1"
+#define OPTION_APPLY_SHOWOPENED  	"2"
 
 /*
 -----------------------------------------------------------------------------------------
@@ -523,6 +551,15 @@ Identificadores de visualização
 
 /*
 -----------------------------------------------------------------------------------------
+Identificadores de visualização
+-----------------------------------------------------------------------------------------
+*/
+#define PAGE_NAV_DEFAULT ""
+#define PAGE_NAV_NAO     "0"
+#define PAGE_NAV_SIM     "1"
+
+/*
+-----------------------------------------------------------------------------------------
 Identificadores de bits para liberação de acesso
 -----------------------------------------------------------------------------------------
 */
@@ -547,38 +584,6 @@ Identificadores de objetos das bases de dados
 #define FT_STD "STD"
 #define FT_CVS "CVS"
 #define FT_MIX "MIX"
-
-/*
------------------------------------------------------------------------------------------
-Lista de icones para DW
------------------------------------------------------------------------------------------
-*/
-#define DW_ICONE_LIST {{ "Padrão", "dw_new.gif" } , ;
-               { "Produção", "dw_fab.gif" } , ;
-               { "Financeiro", "dw_fin.gif" } , ;
-               { "R.H.", "dw_rh.gif" } , ;
-               { "Comercial", "dw_ven.gif" } }
-               
-/*
------------------------------------------------------------------------------------------
-Lista de opções de processamento para registros inválidos
------------------------------------------------------------------------------------------
-*/
-#define PROCINV_LIST    {{ "Aceita registros invalidos" , PROCINV_ALL            }, { "Rejeita registros invalidos", PROCINV_IGNORE_INVALID }, { "Ignorar todos os registros" , PROCINV_IGNORE_ALL     } }
-
-/*
------------------------------------------------------------------------------------------
-Lista de opções de processamento para atualização
------------------------------------------------------------------------------------------
-*/
-#define UPDMET_LIST     {{ "Padrão"     , UPDMET_DEFAULT }, { "Inserção"   , UPDMET_INSERT  }, { "Atualização", UPDMET_UPDATE  } }
-
-/*
------------------------------------------------------------------------------------------
-Lista de opções de listagem de inválidos
------------------------------------------------------------------------------------------
-*/
-#define RPTINVAL_LIST   { { "Não gerar"                 , RPTINVAL_NONE        }, { "Somente chaves, max. 500"  , RPTINVAL_KEYSONLY    }, { "Completo, max. 500"        , RPTINVAL_FULL        }, { "Somente chaves, sem limite", RPTINVAL_KEYSONLY_SL }, { "Completo, sem limite"      , RPTINVAL_FULL_SL     } }
 
 /*
 -----------------------------------------------------------------------------------------
@@ -621,8 +626,10 @@ Valores de descrição do tipo de objetos
 -----------------------------------------------------------------------------------------
 */
 #define OBJ_DIMENSION   "D"
-#define OBJ_CUBE		    "C"
-#define OBJ_QUERY		    "Q"
+#define OBJ_CUBE		"C"
+#define OBJ_QUERY		"Q"
+#define OBJ_VIRTFLD_CUB "CVC"
+#define OBJ_VIRTFLD_QRY	"CVQ"
 #define OBJ_FILTER	    "F"
 #define OBJ_USER        "U"
 #define OBJ_CONNECTION  "S"
@@ -634,15 +641,17 @@ Valores de descrição do tipo de objetos
 Identificação do tipo de informação (grupo), passada via IPC
 -----------------------------------------------------------------------------------------
 */
-#define IPC_SIZE_ARRAY 7    
-#define IPC_BUFFER     -1
-#define IPC_ERRO       1
-#define IPC_INFO       2
-#define IPC_TEMPO      3
-#define IPC_PROCESSO   4
-#define IPC_ETAPA      5
-#define IPC_AVISO      6
-#define IPC_TERMINO    7
+#define IPC_SIZE_ARRAY        7    
+#define IPC_BUFFER           -1
+#define IPC_ERRO              1
+#define IPC_INFO              2
+#define IPC_TEMPO             3
+#define IPC_PROCESSO          4
+#define IPC_ETAPA             5
+#define IPC_AVISO             6
+#define IPC_AVISO_SP          7
+#define IPC_TERMINO           8
+#define IPC_TERMINO_W_WARNING 9
 
 /*
 -----------------------------------------------------------------------------------------
@@ -651,8 +660,6 @@ Identificação de tipos de consultas
 */
 #define QUERY_USER			"U"//suário
 #define QUERY_PREDEF		"P"//re-definida
-#define QUERY_USER_DESC		"de Usuário"
-#define QUERY_PREDEF_DESC	"Pre-Definida"
 
 /*
 -----------------------------------------------------------------------------------------
@@ -692,10 +699,10 @@ Operações de paginação
 #define QUERY_QBE         "QBE" // QBE = Pesquisa por QBE
 #define QUERY_ALLRECORDS  "ALL" // ALL = browse ALL Records
 
-#define FIELD_INICIALIZER	"INIT"     // Inicializa os campos para a tabela específica
+#define FIELD_INICIALIZER "INIT"     // Inicializa os campos para a tabela específica
 #define FIELD_TYPE        "TYPE"     // Pesquisar o tipo um campo
 #define FIELD_SIZE        "SIZE"     // Pesquisar o tamanho um campo
-#define FIELD_DEC_SIZE 		"DECSIZE"  // Pesquisar o número de casas decimais de um campo
+#define FIELD_DEC_SIZE 	  "DECSIZE"  // Pesquisar o número de casas decimais de um campo
 #define FIELD_CAPTION     "CAPTIONN" // Pesquisar o caption de um campo
 #define FIELD_MEMO        "M"        // campo com tipo Memo
 
@@ -706,39 +713,42 @@ pelos métodos de cache da classe TConsulta e nos arquivos que modifiquem ou aces
 uma consulta em cahe.
 -----------------------------------------------------------------------------------------
 */
-#define MEMO_CONS_QTDE_ELEMS  32 // Quantidade de elementos do array
-#define MEMO_CONS_AXIS_X       1 // definição do eixo X
-#define MEMO_CONS_AXIS_Y       2 // definição do eixo Y
-#define MEMO_CONS_AXIS_M       3 // definição do eixo m (indicadores
-#define MEMO_CONS_ALERT        4 // definição dos alertas
-#define MEMO_CONS_WHERE        5 // definição dos filtros
-#define MEMO_CONS_DRILL        6 // definição do drill
-#define MEMO_CONS_RANK         7 // definição do rank
-#define MEMO_CONS_RECLIM       8 // definição da propriedade de limite de registros
-#define MEMO_CONS_INDSOBR      9 // definição da propriedade ind. sobre possto
-#define MEMO_CONS_EMPTYCELL   10 // definição da propriedade empty cell
-#define MEMO_CONS_FILTERED    11 // definição da propriedade filtered
-#define MEMO_CONS_TOTAL       12 // definição da propriedade total
-#define MEMO_CONS_ALERTON     13 // definição da propriedade alert on
-#define MEMO_CONS_HINTON      14 // definição da propriedade hint on
-#define MEMO_CONS_IGNZERO     15 // definição da propriedade ignorar zeros
-#define MEMO_CONS_USEEXCEL    16 // definição da propriedade excel
-#define MEMO_CONS_RANKON      17 // definição da propriedade rank on
-#define MEMO_CONS_RNKOTHER    18 // definição da propriedade rankear outros
-#define MEMO_CONS_ZERACUM     19 // definição da propriedade zera acumulados
-#define MEMO_CONS_ISVALID     20 // definição da propriedade se consulta é valida
-#define MEMO_CONS_GRAPHCLASS  21 // definição da propriedade classe do gráfico
-#define MEMO_CONS_GRAPHPROPS  22 // definição da propriedade do gráfico
-#define MEMO_CONS_GRAPHPY     23 // definição da propriedade Y do gráfico
-#define MEMO_CONS_GRAPHPY2    24 // definição da propriedade Y2 do gráfico
-#define MEMO_CONS_KEY_VALUES  25 // chaves de valores para a páginação
-#define MEMO_CONS_AUTO_FILTER 26 // chaves de valores para o auto filter/seleção
-#define MEMO_CONS_CUBE_ID     27 // ID do cubo da consulta
-#define MEMO_CONS_PROPS       28 // Outras propriedades
-#define MEMO_CONS_HIDEATT     29 // atributos não visiveis
-#define MEMO_CONS_PAGE_KEYS	  30 // chaves usadas na paginação
-#define MEMO_CONS_DRILL_HIST	31 // chaves usadas na paginação
-#define MEMO_CONS_CURVAABC    32 // parametros para classificação da curva ABC
+#define MEMO_CONS_QTDE_ELEMS   35 // Quantidade de elementos do array
+#define MEMO_CONS_AXIS_X        1 // definição do eixo X
+#define MEMO_CONS_AXIS_Y        2 // definição do eixo Y
+#define MEMO_CONS_AXIS_M        3 // definição do eixo m (indicadores
+#define MEMO_CONS_ALERT         4 // definição dos alertas
+#define MEMO_CONS_WHERE         5 // definição dos filtros
+#define MEMO_CONS_DRILL         6 // definição do drill
+#define MEMO_CONS_RANK          7 // definição do rank
+#define MEMO_CONS_RECLIM        8 // definição da propriedade de limite de registros
+#define MEMO_CONS_INDSOBR       9 // definição da propriedade ind. sobre possto
+#define MEMO_CONS_EMPTYCELL    10 // definição da propriedade empty cell
+#define MEMO_CONS_FILTERED     11 // definição da propriedade filtered
+#define MEMO_CONS_TOTAL        12 // definição da propriedade total
+#define MEMO_CONS_ALERTON      13 // definição da propriedade alert on
+#define MEMO_CONS_HINTON       14 // definição da propriedade hint on
+#define MEMO_CONS_IGNZERO      15 // definição da propriedade ignorar zeros
+#define MEMO_CONS_USEEXCEL     16 // definição da propriedade excel
+#define MEMO_CONS_RANKON       17 // definição da propriedade rank on
+#define MEMO_CONS_RNKOTHER     18 // definição da propriedade rankear outros
+#define MEMO_CONS_ZERACUM      19 // definição da propriedade zera acumulados
+#define MEMO_CONS_ISVALID      20 // definição da propriedade se consulta é valida
+#define MEMO_CONS_GRAPHCLASS   21 // definição da propriedade classe do gráfico
+#define MEMO_CONS_GRAPHPROPS   22 // definição da propriedade do gráfico
+#define MEMO_CONS_GRAPHPY      23 // definição da propriedade Y do gráfico
+#define MEMO_CONS_GRAPHPY2     24 // definição da propriedade Y2 do gráfico
+#define MEMO_CONS_KEY_VALUES   25 // chaves de valores para a páginação
+#define MEMO_CONS_AUTO_FILTER  26 // chaves de valores para o auto filter/seleção
+#define MEMO_CONS_CUBE_ID      27 // ID do cubo da consulta
+#define MEMO_CONS_PROPS        28 // Outras propriedades
+#define MEMO_CONS_HIDEATT      29 // atributos não visiveis
+#define MEMO_CONS_PAGE_KEYS	   30 // chaves usadas na paginação
+#define MEMO_CONS_DRILL_HIST   31 // chaves usadas na paginação
+#define MEMO_CONS_CURVAABC     32 // parametros para classificação da curva ABC
+#define MEMO_CONS_RANKSUBTOTAL 33 // sub-total de rank
+#define MEMO_CONS_RANKTOTAL    34 // total de rank
+#define MEMO_CONS_RANKSTYLE    35 // estilo do rank
 
 /*
 -----------------------------------------------------------------------------------------
@@ -754,7 +764,7 @@ Identificadores de listas para combos
 -----------------------------------------------------------------------------------------
 */
 
-#define NUM_COMBO_LISTS        7
+#define NUM_COMBO_LISTS       12
 #define ADVPL_FIELD_TYPES      1
 #define PERIODICIDADE_SCHD     2
 #define TIPO_CONEXAO           3
@@ -762,7 +772,12 @@ Identificadores de listas para combos
 #define ADVPL_EXT_FIELD_TYPES  5
 #define AGG_LIST_FOR_APPLET    6
 #define RNK_PROCESSOS          7
-      
+#define FILE_TYPES	           8
+#define RPTINV_OPTIONS         9
+#define DW_ICONES		      10
+#define RNK_STYLE             11
+#define RNK_STYLE_PARC        12
+
 /*
 -----------------------------------------------------------------------------------------
 Identificadores dos métodos utilizados para sumarização no Oracle
@@ -790,7 +805,6 @@ Identificadores de dimensão e atributos reservados
 #define DIM_EMPFIL              "EMPFIL"
 #define ATT_M0_CODIGO_KEYSEQ    1
 #define ATT_M0_CODIGO_NOME      "M0_CODIGO"
-#define ATT_M0_CODIGO_DESCRICAO "Código da Empresa"
 #define ATT_M0_CODIGO_VISIBLE   .F.
 #define ATT_M0_CODIGO_TIPO      "C"
 #define ATT_M0_CODIGO_TAM       2
@@ -802,12 +816,17 @@ Identificadores de dimensão e atributos reservados
 Identificadores de tipos de ranking
 -----------------------------------------------------------------------------------------
 */
-
 #define RNK_ZERA     "x" // zerar R_A_N_K_ (limpar)
 #define RNK_PARETO   "P" // principio de pareto
 #define RNK_MENORES  "-" // menores
 #define RNK_MAIORES  "+" // maiores
-#define RNK_CURVAABC "A" // maiores
+#define RNK_CURVAABC "A" // curva abc
+
+#define RNK_STY_PADRAO    "x" // processamento padrão
+#define RNK_STY_CURVA_ABC "A" // curva abc
+#define RNK_STY_LEVEL     "L" // por nível de DD
+#define RNK_STY_CLEAR     "C" // limpar definição
+
 
 /*
 -----------------------------------------------------------------------------------------
@@ -820,7 +839,72 @@ Identificadores das posições das informações de classificação para a curva ABC
 #define ABC_DESC       3  // descrição
 #define ABC_COR        4  // cor de destaque
 #define ABC_LIMITE     5  // limite inferior da classificação
+      
+/*
+-----------------------------------------------------------------------------------------
+Identificadores de modos de compartilhamento
+-----------------------------------------------------------------------------------------
+*/
+#define MODO_COMP_EMPRESA     "A" // compartilhamento por empresa
+#define MODO_COMP_FILIAL      "C" // compartilhamento por filial
+#define MODO_EXCLUSIVO        "E" // exclusivo
+
+/*
+-----------------------------------------------------------------------------------------
+Mneumonicos para comandos SQL (usado em TQuery:execute())
+-----------------------------------------------------------------------------------------
+*/
+#define EX_CREATE_INDEX   "CI"
+#define EX_CREATE_VIEW    "CV"
+#define EX_SELECT_INTO    "SI"
+#define EX_DROP_PK        "AT"
+#define EX_CREATE_PK      "AT_PK"
+#define EX_DROP_INDEX     "DI"
+#define EX_DROP_PROCEDURE "DP"
+#define EX_DROP_VIEW      "DV"
+#define EX_DROP_TABLE     "DT"
+#define EX_UPDATE_STAT    "US"
+#define EX_REN_TABLE      "RN_TAB"
+
+/*
+-----------------------------------------------------------------------------------------
+Privilegios de acesso a objetos DW
+-----------------------------------------------------------------------------------------
+*/
+#define PRIV_OBJ_DW     "DW"
+#define PRIV_OBJ_QUERY  "Q"
+#define PRIV_OBJ_CUBE   "C"
+
+#define PRIV_OPER_CREATE "C"
+#define PRIV_OPER_ACESS  "A"
+#define PRIV_OPER_MANUT  "M"
+#define PRIV_OPER_EXPORT "E"
+
+#define PRIV_AUTH_NDEFINED "N"
+#define PRIV_AUTH_AUTHOR   "A"
+#define PRIV_AUTH_DENIED   "D"
+
+
+/*
+-----------------------------------------------------------------------------------------
+MAGIC DEFINES - estes defines são utilzados na consulta, para definir que o atributo não
+é vazio, mas deve ser apresentado como "branco"
+-----------------------------------------------------------------------------------------
+*/
+#define MAGIC_CHAR     "{ #$}"          
+#define MAGIC_NUMBER   -9999999999 //10 digitos (qtde de digitos confiaveis)
+#define MAGIC_DATE     "15000422"  //data de referencia
+
+/*
+-----------------------------------------------------------------------------------------
+Identificadores de parametros get/post de uso comum
+-----------------------------------------------------------------------------------------
+*/
+#define SESSION_ID_PARAM    "SESSIONID"
+
+#define ALL_PREVIOUS 	"allVersions"
+#define BUILD_ADVPL		"AP"
+#define BUILD_SITE		"WS"
 
 #endif
-
 

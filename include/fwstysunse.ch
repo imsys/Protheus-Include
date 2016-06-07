@@ -106,7 +106,8 @@
 					"    border-bottom-right-radius:0px; }"+;
 					"QComboBox::indicator { image: url(rpo:fwsst_cbx_arw_nml.png) }"+;
 					"QComboBox QListView{ color: #472929; "+;
-					"    border-width: 1px; border-style: flat; }"
+					"    border-width: 1px; border-style: flat; }"+;
+					"tLabel { color: #472929;}"
 
 #DEFINE FWSST_GET	"QLineEdit { color: #000000; selection-background-color: #CA5F5E;"+;
 					"    border-image: url(rpo:fwsst_get_nml.png) 3 3 3 3 stretch; "+;
@@ -117,7 +118,8 @@
 					"    border-width: 3px; padding: -1px; }"+;
 					"QLineEdit:disabled { color:#000000; "+;
 					"    border-image: url(rpo:fwsst_get_dld.png) 3 3 3 3 stretch; "+;
-					"    border-width: 3px; padding: -1px; }"
+					"    border-width: 3px; padding: -1px; }"+;
+					"tLabel { color: #472929;}"
 
 #DEFINE FWSST_RDO	"QRadioButton { background-repeat: repeat-x; "+;
 					"    background-repeat: repeat-y; "+;
@@ -130,7 +132,7 @@
 					"    background-image: url(rpo:fwsst_rdo_nml.png); }"+;
 					"QRadioButton:hover { color: #D40003; "+;
 					"    background-image: url(rpo:fwsst_rdo_hvr.png); } "+;
-					"QRadioButton:checked { color: #005284 } "+;
+					"QRadioButton:checked { color: #704040 } "+;
 					"QRadioButton::indicator::checked { image: url(rpo:fwsst_rdo_ckd.png); }"+;
 					"QRadioButton::indicator::unchecked { image: url(rpo:fwsst_rdo_unc.png); }"+;
 					"QWidget { border-width: 0px }"
@@ -212,12 +214,8 @@
 					"QScrollBar::sub-line:vertical{ subcontrol-position:top; }"+;
 					"QScrollBar::sub-line:vertical{ subcontrol-origin:margin; }"
 
-#DEFINE FWSST_LST	"Q3ListBox{ border-image:none; "+;
-					"    color: #472929; "+;
-					"    border: 1px solid #B6B6B6; }"+;
-					"Q3ListBox{ selection-background-color: #FB292A; "+;
-					"    alternate-background-color: #FF0000; "+;
-					"    background: #FFFFFF; color: #000000; border: 1px solid #9E9E9E; }"
+#DEFINE FWSST_LST "QHeaderView::section { color: #361F1F; background-image: url(rpo:fwsst_brw_hdr.png); border: 1px solid #CA5F5E; }"+;
+       		  "QTableView{ selection-background-color: #D12728; alternate-background-color: #FFEFDE; background: #FFFFFF; color: #000000; border: 1px solid #9E9E9E; }"
 
 #DEFINE FWSST_TREE	"Q3ListView{ color: #472929; }"+;
 					"Q3ListView{ border: 1px solid #DFDFDF; }"
@@ -237,7 +235,8 @@
 						"    border-top-width: 3px; "+;
 						"    border-left-width: 3px; "+;
 						"    border-right-width: 3px; "+;
-						"    border-bottom-width: 3px }"
+						"    border-bottom-width: 3px }"+;
+						"tLabel { color: #472929;}"
 
 #DEFINE FWSST_PRC	"QProgressBar { border-image: url(rpo:fwsst_mtr_bg.png) 2 2 2 2 round stretch; "+;
 					"    border-width: 2px; "+;
@@ -245,15 +244,12 @@
 					"    max-height:7px; }"+;
 					"QProgressBar::chunk { background-image: url(rpo:fwsst_mtr.png); }"
 
-#DEFINE FWSST_BRW	"QHeaderView::section { color: #472929; "+;
-					"    padding-left: 4px; "+;
-					"    border-image:url(rpo:fwsst_brw_hdr_nml.png) 2 2 2 2 stretch; border-width: 2px; height: 30px; }"+;
-					"Q3Table{ color: #0000FF; "+;
-					"    border: 1px solid #DFDFDF; }"+;
-					"Q3Header::section { color: #00FF00; "+;
-					"    padding-left: 4px; "+;
-					"    border-image:url(rpo:fwsst_brw_hdr_nml.png) 2 2 2 2 stretch; border-width: 2px; }"+;
-					"Q3Header::section:pressed { border-image:url(rpo:fwsst_brw_hdr_prd.png) 2 2 2 2 stretch; border-width: 2px; }"
+#DEFINE FWSST_BRW	"QHeaderView::section { color: #361F1F; "+;
+					"    padding-left: 4px; height: 30px; "+;
+					"    background-image: url(rpo:fwsst_brw_hdr.png); border: 1px solid #CA5F5E; }"+;
+					"QTableView{ selection-background-color: #D12728; "+;
+					"    alternate-background-color: #FFEFDE; "+;
+					"    background: #FFFFFF; color: #361F1F; border: 1px solid #A0A0A0; }"
 
 #DEFINE FWSST_SPN	"QSpinBox { border: 1px solid #DFDFDF;  }"+;
 					"QSpinBox::up-button { padding-top: -2px; "+;

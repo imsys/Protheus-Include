@@ -23,8 +23,9 @@
 #DEFINE SM0_DESCEMP 19 // Descricao da Empresa
 #DEFINE SM0_DESCUN  20 // Descricao da Unidade
 #DEFINE SM0_DESCGRP 21 // Descricao do Grupo
+#DEFINE SM0_IDMID   22 // Código no Identity Manager
 
-#DEFINE SM0_SIZEARRAY  21 // Tamanho do Array da função FWLoadSM0(), sempre deverá ter o tamanho máximo dos defines acima
+#DEFINE SM0_SIZEARRAY  22 // Tamanho do Array da função FWLoadSM0(), sempre deverá ter o tamanho máximo dos defines acima
 
 //-------------------------------------------------------------------
 // Retorna o tamanho do campo filial

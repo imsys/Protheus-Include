@@ -344,4 +344,4 @@
 			 [ ID <cId> ] ;
  			 [ TOOLBAR <cToolbar> ] ;
 			=>;
-				Aadd( <aRotina>, { <cTitle>, <cAction>, 0, <nOperation>, <nAccess>, /*<lMnuIni>*/, [<.lDisable.>], [<cId>], [<cToolbar>] })
+				Aadd( <aRotina>, { <cTitle>, <cAction>, 0, <nOperation>, <nAccess>, /*<lMnuIni>,*/ [!<.lDisable.>], [<cId>], [<cToolbar>] })

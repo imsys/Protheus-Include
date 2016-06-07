@@ -29,6 +29,7 @@
 #define ERR_011          011   // Chamada de procedimento não liberado
 #define ERR_012          012   // URL de chamada inválida             
 #define ERR_013			 013   // SessionTimeOut expirada
+#define ERR_014			 014   // Este grupo não pode ser removido 
 
 #define SOL_000			 000   // (nada a fazer)
 #define SOL_001			 001   // Certifique-se que os dados ...
@@ -38,6 +39,7 @@
 #define SOL_005			 005   // Aguarde...e entre em contato...
 #define SOL_006			 006   // Execute procedimento de liberação...
 #define SOL_007			 007   // Efetue login novamente para reestabelecer conexão
+#define SOL_008			 008   // Apenas grupos criados por usuários podem ser removidos
 
 /*
 #define ERR_001			 001   // Procedimento/função não implementada

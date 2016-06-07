@@ -217,8 +217,8 @@
 					"QScrollBar::sub-line:vertical{ subcontrol-position:top; }"+;
 					"QScrollBar::sub-line:vertical{ subcontrol-origin:margin; }"
 
-#DEFINE FWOCN_LST	"Q3ListBox{ color: #2462a6; "+;
-					"    border: 1px solid #DFDFDF; }"
+#DEFINE FWOCN_LST	"QHeaderView::section { color: #000000; border-image:url(rpo:fwstd_brw_hdr_nml.png) 2 2 2 2 stretch; border: 1px solid #A0A0A0; }"+;
+       		  	"QTableView{ selection-background-color: #3399FF; alternate-background-color: #B2CBE7; background: #FFFFFF; color: #000000; border: 1px solid #A0A0A0; }"
 
 #DEFINE FWOCN_TREE	"Q3ListView{ color: #2462A6; }"+;
 					"Q3ListView{ border: 1px solid #DFDFDF; }"
@@ -231,15 +231,12 @@
 					"    background-color: #FFFFFF; }"+;
 					"QProgressBar::chunk { background-image: url(rpo:fwocn_mtr.png); }"
 
-#DEFINE FWOCN_BRW	"QHeaderView::section { color: #2462A6; "+;
-					"    padding-left: 4px; "+;
-					"    border-image:url(rpo:fwocn_brw_hdr_nml.png) 2 2 2 2 stretch; border-width: 2px; }"+;
-					"Q3Table{ color: #2462A6; "+;
-					"    border: 1px solid #DFDFDF; }"+;
-					"Q3Header::section { color: #2462A6; "+;
-					"    padding-left: 4px; "+;
-					"    border-image:url(rpo:fwocn_brw_hdr_nml.png) 2 2 2 2 stretch; border-width: 2px; }"+;
-					"Q3Header::section:pressed { border-image:url(rpo:fwocn_brw_hdr_prd.png) 2 2 2 2 stretch; border-width: 2px; }"
+#DEFINE FWOCN_BRW	"QHeaderView::section { color: #004A77; "+;
+					"    padding-left: 4px; height: 30px; "+;
+					"    border-image:url(rpo:fwstd_brw_hdr_nml.png) 2 2 2 2 stretch; border-width: 2px; }"+;
+					"QTableView{ selection-background-color: #3399FF; "+;
+					"    alternate-background-color: #B2CBE7; "+;
+					"    background: #FFFFFF; color: #000000; border: 1px solid #99CCFF; }"
 
 #DEFINE FWOCN_SPN	"QSpinBox { border: 1px solid #DFDFDF;  }"+;
 					"QSpinBox::up-button { padding-top: -2px; "+;

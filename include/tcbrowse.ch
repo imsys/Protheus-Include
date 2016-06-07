@@ -59,7 +59,7 @@
     [ If( ValType(<uData>)=="B", <uData>, <{uData}> ) ], <cPicture>, ;
     [ If( ValType(<uClrFore>)=="B", <uClrFore>, <{uClrFore}> ) ], ;
     [ If( ValType(<uClrBack>)=="B", <uClrBack>, <{uClrBack}> ) ], ;
-    If(!<.align.>,"LEFT", Upper(<(align)>)), <nWidth>, <.bit.>, ;
+    If(!<.align.>,"LEFT", [Upper(<(align)>)]), <nWidth>, <.bit.>, ;
     <.edit.>, <cMsg>, <{uValid}>, <cErr>, <.lite.>, <(cOrder)> )
 
 #command ADD [ COLUMN ] TO [ BROWSE ] <oBrw> ;

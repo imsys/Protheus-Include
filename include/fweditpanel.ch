@@ -25,6 +25,7 @@
 #Define FF_CHECK_HEIGHT						014 // Altura padrão do campo Check
 #Define FF_MSGET_HEIGHT						009 // Altura padrão do MSGET
 #Define FF_COMBO_BUTTON_WIDTH			008 // Largura do botão da ComboBox
+#Define FF_COMBO_BUTTON_HEIGHT			015 // Largura do botão da ComboBox
 #Define FF_CTRL_WIDTH_MINIMAL			032 // Largura minima do controle
 
 // Dimensao dos objetos largos                  
@@ -57,7 +58,7 @@
 
 
 // Disposicao dos campos
-#Define FF_PARAM_ITEMS_COUNT			028
+#Define FF_PARAM_ITEMS_COUNT			029
 #Define FF_PARAM_ORDER					001
 #Define FF_PARAM_CTRL_TYPE				002
 #Define FF_PARAM_FIELD					003
@@ -86,6 +87,7 @@
 #Define FF_PARAM_CPICTVAR				026
 #Define FF_PARAM_LINESCTRL				027
 #Define FF_PARAM_CTRLWIDTH				028
+#Define FF_PARAM_VIRTUAL 				029
 
 // *******************************************************************************************
 // [OBSOLETO, separador de grupo sera uma linha]

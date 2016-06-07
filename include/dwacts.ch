@@ -6,7 +6,18 @@
 // Data     | Autor             | Descricao
 // ---------+-------------------+--------------------------------------------------------
 // 27.09.03 | 0548-Alan Candido | Versão 3
+// 18.01.08 | 0548-Alan Candido | BOPS 139342 - Implementação e adequação de código, 
+//          |                   | em função de re-estruturação para compartilhamento de 
+//          |                   | código.
+// 20.02.08 | 0548-Alan Candido | BOPS 140966 - Implementação da opção de alinhar os botões
+//          |                   | de formulários a direita.
+// 10.04.08 | 0548-Alan Candido | BOPS 142154
+//          |                   | Novas açoes
 // --------------------------------------------------------------------------------------
+
+#ifndef _DWACTS_CH
+
+#define _DWACTS_CH
 
 #define URL_BASE ""
 
@@ -66,23 +77,29 @@
 #define FFLD_CHOOSE  	  14
 #define FFLD_DOTBTNACT	15
 #define FFLD_DOTINPUT	  16
+#define FFLD_LEN_MAX	  17
+#define FFLD_SHOWKBE	  18
 
-#define BTN_SIZE_ARRAY  4
+#define BTN_SIZE_ARRAY  7
 #define BTN_TYPE     1
 #define BTN_CAPTION  2
 #define BTN_ACTION   3
 #define BTN_SMALL    4
 #define BTN_ACTPARMS 5
+#define BTN_ENABLE   6
+#define BTN_ID       7
 
 #define NAME_ACTION      1
 #define BEFORE_ACTION    2
 #define EXEC_ACTION      3
 #define AFTER_ACTION     4
 
+#define LIST_SIZE    5
 #define LIST_LINK    1
 #define LIST_ICONE   2
 #define LIST_NAME    3
 #define LIST_DESC    4
+#define LIST_FLEX    5
 
 #define CUSTOM_EVENT "@event@" // para EDT_CUSTOM
                            
@@ -93,11 +110,12 @@
 #define AC_CHANGEDW        "changedw"
 #define AC_COL_SORT        "colsort"
 #define AC_FORGET_PW       "forgetpw"
+#define AC_TEST_MAIL	   "testmail"
 #define AC_SEND_PW         "sendpw"
 #define AC_LOGIN           "login"
 #define AC_LOGOUT          "logout"
 #define AC_NEW_DW          "newdw"
-#define AC_DELETE_DW			 "deletedw"
+#define AC_DELETE_DW	   "deletedw"
 #define AC_PROC_ABA        "procaba"
 #define AC_REC_MANUT       "recmanut"
 #define AC_REC_NEW         "recnew"
@@ -120,6 +138,7 @@
 #define AC_TOOLS_META	     "tools_meta"
 #define AC_DOWNLOAD		     "download"
 #define AC_EXEC_DOWNLOAD   "execDownload"
+#define AC_EXEC_DOWNLOAD_INLINE "execDownloadInLine"
 #define AC_EXEC_UPLOAD     "execUpload"
 #define AC_UPLOAD_FILE     "uploadFile"
 #define AC_TOOLS_IMPORT	   "tools_import"
@@ -136,6 +155,8 @@
 #define AC_DSN_IMPORT      "dsnImport"
 #define AC_DSN_SCHED       "dsnSched"
 #define AC_EDT_SCHED       "edtSched"
+#define AC_QUERY_SCHED	   "qrySched"
+#define AC_EDTQRY_SCHED	   "edtqrySched"
 #define AC_EDT_EXPRESSION  "edtExpression"
 #define AC_QUERY_DEFCUBE   "queryDefCub"
 #define AC_QUERY_TABLE	   "queryTable"
@@ -199,43 +220,54 @@
 #define AC_DW_USER 				"alterCadastro"
 #define AC_ALTER_DUPLI_FIELD 	"alterDupField"   
 #define AC_OPEN_URL		   		"openURL"
-#define AC_SYNC_EMPFIL     "syncEmpFil"
+#define AC_SYNC_EMPFIL     		"syncEmpFil"
+#define AC_GET_INFO        		"getInfo"
+#define AC_START_UPLOAD         "startUpload"
+#define AC_UPLOAD_FORM          "uploadForm"
+#define AC_FLEX        			"actionFlex"
+#define AC_INFORMATION        	"information"
 
-#define OP_NONE            0 //""
-#define OP_SUBMIT          1 //"s"//ubmit"
-#define OP_STEP            2 //"st"//ep
-#define OP_REC_EDIT        3 //"e"//dit"
-#define OP_REC_DEL         4 //"d"//el"
-#define OP_REC_NEW         5 //"n"//ew"
-#define OP_REC_NO_STEPS	   6 //"ns"//NoStepEdit"
-#define OP_REC_STEPS	   7 //"se"//StepEdit"
-#define OP_REC_CONF		   8 //"rc"//RecordeConfirmation"
-#define OP_DISPLAY		   9 //"v"//Visualize"
-#define OP_EXEC_ONLINE	  10 //"x"eXecutar online
-#define OP_RESET		  11 //"r"eset
+#define GI_USER            "user"
+#define GI_QUERY           "query"
 
-#define OP_EXCEL_LOGIN		1
-#define OP_EXCEL_CONS		2
-#define OP_EXCEL_QUERY		3
-#define OP_EXCEL_SELEC		4
-#define OP_EXCEL_PREPEXEC	5
-#define OP_EXCEL_EXEC		6
+#define OP_NONE            0 //nenhuma
+#define OP_SUBMIT          1 //submit
+#define OP_STEP            2 //step
+#define OP_REC_EDIT        3 //edit
+#define OP_REC_DEL         4 //del
+#define OP_REC_NEW         5 //new
+#define OP_REC_NO_STEPS	   6 //NoStepEdit
+#define OP_REC_STEPS	     7 //StepEdit
+#define OP_REC_CONF		     8 //RecordeConfirmation
+#define OP_DISPLAY		     9 //Visualize
+#define OP_EXEC_ONLINE	  10 //executar online
+#define OP_RESET          11 //reset
 
-#define BT_SUBMIT          "s"//ubmit"
-#define BT_RESET           "r"//eset"
-#define BT_BUTTON          "b"//utton"
-#define BT_CANCEL          "c"//ancel"
-#define BT_NEXT            "n"//ext step"
-#define BT_PREVIOUS        "p"//revious step"
-#define BT_PROCESS         "pr"//ocess"
-#define BT_JAVA_SCRIPT     "j"//avaScript"
-#define BT_PRINT           "pri"//nt"
-#define BT_CLOSE           "cl"//ose"
-#define BT_DOWNLOAD        "d"//ownload"
-#define BT_FINALIZE        "f"//inalize
-#define BT_ADT_OPER        "o"//peratiom
+#define OP_EXCEL_LOGIN		 1
+#define OP_EXCEL_CONS      2
+#define OP_EXCEL_QUERY		 3
+#define OP_EXCEL_SELEC		 4
+#define OP_EXCEL_PREPEXEC	 5
+#define OP_EXCEL_EXEC      6
+
+#define BT_SUBMIT          "s"  //ubmit
+#define BT_RESET           "r"  //eset
+#define BT_BUTTON          "b"  //utton
+#define BT_CANCEL          "c"  //ancel
+#define BT_NEXT            "n"  //ext step
+#define BT_PREVIOUS        "p"  //revious step
+#define BT_PROCESS         "pr" //ocess
+#define BT_JAVA_SCRIPT     "j"  //avaScript
+#define BT_PRINT           "pri"//nt
+#define BT_CLOSE           "cl" //ose
+#define BT_DOWNLOAD        "d"  //ownload
+#define BT_FINALIZE        "f"  //inalize
+#define BT_ADT_OPER        "o"  //peratiom
 #define BT_BREAKROW        "br" //break row
-#define BT_CUSTOM          "#" //custom
+#define BT_CUSTOM          "#"  //custom
+#define BT_NO_INS_DEFAULT  "x"  //não insere botões default
+#define BT_RIGHT_ALIGN     "Y"  //alinha os botões a direita
+#define BT_START_UPLOAD    "su" //start upload form
 
 #define ABA_ID       1
 #define ABA_CAPTION  2
@@ -251,6 +283,7 @@
 
 #define LIST_MINI    0
 #define LIST_LIST    1
+#define LIST_TOP_DOWN  2
 
 #define OPB_CAPTION   1
 #define OPB_ICONE     2
@@ -268,6 +301,7 @@
 #define EDT_CMD_COPY     "O"//c?py
 #define EDT_CMD_EDIT     "D"//e?it
 #define EDT_CMD_VIEW     "V"//iew
+#define EDT_CMD_DISPLAY  "Y"//Display
 
 #define MAP_SIZE         6
 #define MAP_TYPE         1
@@ -285,3 +319,13 @@
 #define IFRAME_WIDTH          3
 #define IFRAME_HEIGHT         4
 #define IFRAME_PARAMS         5
+
+#define ALG_LEFT          "left"
+#define ALG_RIGHT         "right"
+#define ALG_CENTER        "center"
+#define ALG_CLIENT        "client"
+#define ALG_DEFAULT       ALG_CENTER
+
+#define THEME_TOTVSUP       "totvsUp"
+
+#endif

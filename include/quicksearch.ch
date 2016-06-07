@@ -8,11 +8,11 @@
 
 #XTRANSLATE _WSParms_( [<prm,...>] )    =>  [(<prm>)] 	
 
-#XCOMMAND QSSTRUCT <ClsNam> DESCRIPTION <ClsDoc> MODULE <ClsMod> ;
+#XCOMMAND QSSTRUCT <ClsNam> DESCRIPTION <ClsDesc> MODULE <ClsMod> ;
 		=> ;
 		Function _<ClsNam>() ; Return ;;
 		_ObjNewClass( QS_<ClsNam> , FWQSSTRUCT )	;;
-		_ObjClassData( DESCRIPTION__ , string, , <ClsDoc> ) ;; 
+		_ObjClassData( DESCRIPTION__ , string, , \'<ClsDesc>\' ) ;; 
 		_ObjClassData( DESCRIPTION_MODULE , string, , \"<ClsMod>\" ) ;; 
 		_ObjClassMethod( INIT, _WSParms_(), ) ;;
 		_ObjEndClass()
@@ -25,7 +25,7 @@
 		=> ;
 		self:AddTable(<table1>,[<table2>],[<join>],<.left.>,<.right.>,[<cAlias1>],[<cAlias2>])
 
-#XTRANSLATE QSPARENTFIELD <field1,...> INDEX ORDER <order> [ LABEL <label> ] ;
+#XTRANSLATE QSPARENTFIELD <field1,...> [ INDEX ORDER <order> ] [ LABEL <label> ] ;
 		[ <fields2:SET RELATION TO> <field2,...> [ <fields3:WITH> <field3,...> ] ] ;
 		=> ;
 		self:AddParentField(\{<field1>\},<order>,[<label>],[\{<field2>\}],[\{<field3>\}])
@@ -43,10 +43,10 @@
 		QSFIELD <field1> [ LABEL <label1> ] ;;
 		QSFIELD <fieldN> [ LABEL <labelN> ]
 
-#XTRANSLATE QSFIELD <field1> [ LABEL <label1> ] ORDER BY [, <fieldN> [ LABEL <labelN> ] ORDER BY ] ;
+#XTRANSLATE QSFIELD <field1> [ LABEL <label1> ] ORDER BY [ <orderDesc: DESC> ] [, <fieldN> [ LABEL <labelN> ] ORDER BY [ <orderDesc: DESC> ] ] ;
 		=> ;
-		self:AddGridField(<field1>,<label1>, NIL, .T.) ;
-		[; self:AddGridField(<fieldN>,<labelN>, NIL, .T.) ]
+		self:AddGridField(<field1>,<label1>, NIL, .T., <.orderDesc.>) ;
+		[; self:AddGridField(<fieldN>,<labelN>, NIL, .T., <.orderDesc.>) ]
 
 #XTRANSLATE QSFIELD SUM <field1> [ LABEL <label1> ] [, <fieldN> [ LABEL <labelN> ] ] ;
 		=> ;
@@ -88,13 +88,17 @@
 		self:AddGridField(<field1>,<label1>, "MAX", .T.) ;
 		[; self:AddGridField(<fieldN>,<labelN>, "MAX", .T.) ]
 
-#XTRANSLATE QSFIELD <field1> EXPRESSION <expr> LABEL <label1> FIELDS <fields,...> [ <groupBy: GROUP BY> ] TYPE <type> SIZE <size> [ DECIMAL <decimal>] [PICTURE <picture>] ;
+#XTRANSLATE QSFIELD <field1> EXPRESSION <expr> LABEL <label1> [ FIELDS <fields,...> ] [ <groupBy: GROUP BY> ] TYPE <type> SIZE <size> [ DECIMAL <decimal>] [PICTURE <picture>] ;
 		=> ;
 		self:AddExpField(<field1>,<label1>, <expr>, \{<fields>\}, <.groupBy.>, [<type>], [<size>], [<decimal>], [<picture>])
 
-#XTRANSLATE QSFIELD <field1> BLOCK <block> LABEL <label1> TYPE <type> SIZE <size> [ DECIMAL <decimal>] [PICTURE <picture>] ;
+#XTRANSLATE QSFIELD <field1> BLOCK <block> LABEL <label1> [ FIELDS <fields,...> ] TYPE <type> SIZE <size> [ DECIMAL <decimal>] [PICTURE <picture>] ;
 		=> ;
-		self:AddBlockField(<field1>,<label1>, <block>, [<type>], [<size>], [<decimal>], [<picture>])
+		self:AddBlockField(<field1>,<label1>, <block>, [<type>], [<size>], [<decimal>], [<picture>], \{<fields>\})
+
+#XTRANSLATE QSFIELD <field1> BLOCK <block> [ FIELDS <fields,...> ] LABEL <label1> TYPE <type> SIZE <size> [ DECIMAL <decimal>] [PICTURE <picture>] ;
+		=> ;
+		self:AddBlockField(<field1>,<label1>, <block>, [<type>], [<size>], [<decimal>], [<picture>], \{<fields>\})
 		
 #XTRANSLATE QSACTION <action> LABEL <label> ;
 		=> ;

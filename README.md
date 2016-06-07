@@ -1,7 +1,7 @@
 TOTVS - Microsiga Protheus Include (Header) Files
 =================================================
 
-Arquivos de cabeçalhos disponibilizados pela TOTVS em 23 de Maio de 2014.
+Arquivos de cabeçalhos disponibilizados pela TOTVS em 5 de Junho de 2016.
 
 Geralmente estes são disponibilizados compactados via [deflate](https://en.wikipedia.org/wiki/DEFLATE) em um formato de específico.
 

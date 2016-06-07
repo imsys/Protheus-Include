@@ -106,7 +106,8 @@
 					"    border-bottom-right-radius:0px; }"+;
 					"QComboBox::indicator { image: url(rpo:fwstd_cbx_arw_nml.png) }"+;
 					"QComboBox QListView{ color: #004A77; "+;
-					"    border-width: 1px; border-style: flat; }"
+					"    border-width: 1px; border-style: flat; }"+;
+					"tLabel { color: #004A77;}"
 
 #DEFINE FWSTD_GET	"QLineEdit { color: #004A77; "+;
 					"    border-image: url(rpo:fwstd_get_nml.png) 3 3 3 3 stretch; "+;
@@ -117,7 +118,8 @@
 					"    border-width: 3px; padding: -1px; }"+;
 					"QLineEdit:disabled { color:#000000; "+;
 					"    border-image: url(rpo:fwstd_get_dld.png) 3 3 3 3 stretch; "+;
-					"    border-width: 3px; padding: -1px; }"
+					"    border-width: 3px; padding: -1px; }"+;
+					"tLabel { color: #004A77;}"
 
 #DEFINE FWSTD_RDO	"QRadioButton { background-repeat: repeat-x; "+;
 					"    background-repeat: repeat-y; "+;
@@ -212,9 +214,8 @@
 					"QScrollBar::sub-line:vertical{ subcontrol-position:top; }"+;
 					"QScrollBar::sub-line:vertical{ subcontrol-origin:margin; }"
 
-#DEFINE FWSTD_LST	"Q3ListBox{ border-image:none; "+;
-					"    color: #004A77; "+;
-					"    border: 1px solid #B6B6B6; }"
+#DEFINE FWSTD_LST	"QHeaderView::section { color: #000000; border-image:url(rpo:fwstd_brw_hdr_nml.png) 2 2 2 2 stretch; border: 1px solid #A0A0A0; }"+;
+       		  	"QTableView{ selection-background-color: #3399FF; alternate-background-color: #B2CBE7; background: #FFFFFF; color: #000000; border: 1px solid #A0A0A0; }"
 
 #DEFINE FWSTD_TREE	"Q3ListView{ color: #004A77; }"+;
 					"Q3ListView{ border: 1px solid #DFDFDF; }"
@@ -234,7 +235,8 @@
 						"    border-top-width: 3px; "+;
 						"    border-left-width: 3px; "+;
 						"    border-right-width: 3px; "+;
-						"    border-bottom-width: 3px }"
+						"    border-bottom-width: 3px }"+;
+						"tLabel { color: #004A77;}"
 
 #DEFINE FWSTD_PRC	"QProgressBar { border-image: url(rpo:fwstd_mtr_bg.png) 2 2 2 2 round stretch; "+;
 					"    border-width: 2px; "+;
@@ -243,15 +245,12 @@
 					"QProgressBar::chunk { background-image: url(rpo:fwstd_mtr.png); }"
 
 #DEFINE FWSTD_BRW	"QHeaderView::section { color: #004A77; "+;
-					"    padding-left: 4px; "+;
-					"    border-image:url(rpo:fwstd_brw_hdr_nml.png) 2 2 2 2 stretch; border-width: 2px; height: 30px; }"+;
-					"Q3Table{ color: #004A77; "+;
-					"    border: 1px solid #DFDFDF; }"+;
-					"Q3Header::section { color: #004A77; "+;
-					"    padding-left: 4px; "+;
+					"    padding-left: 4px; height: 30px; "+;
 					"    border-image:url(rpo:fwstd_brw_hdr_nml.png) 2 2 2 2 stretch; border-width: 2px; }"+;
-					"Q3Header::section:pressed { border-image:url(rpo:fwstd_brw_hdr_prd.png) 2 2 2 2 stretch; border-width: 2px; }"
-
+					"QTableView{ selection-background-color: #3399FF; "+;
+					"    alternate-background-color: #B2CBE7; "+;
+					"    background: #FFFFFF; color: #000000; border: 1px solid #99CCFF; }"
+					
 #DEFINE FWSTD_SPN	"QSpinBox { border: 1px solid #DFDFDF;  }"+;
 					"QSpinBox::up-button { padding-top: -2px; "+;
 					"    image: url(rpo:fwstd_spn_btn_top_nml.png); width: 18px; height: 18px; }"+;
@@ -340,7 +339,7 @@
 #DEFINE	FWSTD_BRW_OPT  "QPushButton{ border-image:url(rpo:x.png) 5 5 5 5 stretch; "+;
 					   "    border-width: 0; "+;
 					   "    color:#024670; "+;
-					   "    text-decoration: underline; }"+;
+					   "    text-decoration: none; }"+;
                        "QPushButton::menu-indicator{ image:url(rpo:fwstd_ppbtn_ind.png); "+;
                        "    subcontrol-position:right; "+;
                        "    subcontrol-origin:padding; "+;
